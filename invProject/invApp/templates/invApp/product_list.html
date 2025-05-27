@@ -8,6 +8,7 @@
     <table class="table table-bordered table-striped ">
         <thead class="thead-dark">
             <tr>
+                <th>Image</th>
                 <th>Product ID</th>
                 <th>Name</th>
                 <th>SKU</th>
@@ -20,16 +21,27 @@
         <tbody>
             {% for product in products %}
             <tr>
+                <td>
+                    {% if product.image_url %}
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}" style="max-width: 100px; max-height: 100px; object-fit: cover;">
+                    {% else %}
+                    <p>No image available</p>
+                     <img src="https://via.placeholder.com/150" alt="Placeholder Image">
+                    {% endif %}
+                </td>
                 <td>{{ product.product_id }} </td>
                 <td>{{ product.name }} </td>
                 <td>{{ product.sku }} </td>
                 <td>{{ product.price }} </td>
                 <td>{{ product.quantity }} </td>
                 <td>{{ product.supplier }} </td>
+                <!-- if the user is not logged in, the delete and update buttons will not be displayed -->
+                {% if user.is_authenticated %}
                 <td>
                     <a href="{% url 'product_update' product.product_id %}" class="btn btn-warning" >Update</a>
                     <a href="{% url 'product_delete' product.product_id %}" class="btn btn-danger" >Delete</a>
                 </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

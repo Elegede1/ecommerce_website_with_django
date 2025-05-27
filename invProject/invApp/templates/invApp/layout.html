@@ -38,6 +38,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'product_list' %}">Show Products</a>  <!-- Link to the product listing page -->
                 </li>
+                {% if user.is_authenticated %}  <!-- Check if the user is authenticated -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>  <!-- Link to the logout page -->
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>  <!-- Link to the login page -->
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </nav>

@@ -1,0 +1,12 @@
+{% extends 'invApp/layout.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<h1>Login</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+</form>
+<!-- if user is not registered, redirect to register page -->
+<p>Don't have an account? <a href="{% url 'signup' %}">Register</a></p>
+{% endblock %}
