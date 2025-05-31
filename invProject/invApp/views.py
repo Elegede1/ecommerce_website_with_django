@@ -20,7 +20,11 @@ from django.contrib.auth.forms import AuthenticationForm
 
 # Create a view to display the home page
 def home_view(request):
-    return render(request, 'invApp/home.html')
+    products = Product.objects.all()
+    context = {
+        'products': products
+    }
+    return render(request, 'invApp/home.html', context)
 
 # Create a view to list all products
 def product_list_view(request):
