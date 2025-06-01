@@ -14,6 +14,7 @@ from django.views import View
 from django.contrib.auth.models import User
 #  import authentificationform for login view
 from django.contrib.auth.forms import AuthenticationForm
+from django.db.models import Q
 
 
 # Create your views here.
@@ -28,9 +29,20 @@ def home_view(request):
 
 # Create a view to list all products
 def product_list_view(request):
-    products = Product.objects.all()
+    query = request.GET.get('q', None) # Get the search query, default to None
+    products = Product.objects.all().order_by('name') # Start with all products, ordered by name
+
+    if query:
+        # Filter by name OR SKU (case-insensitive)
+        # You can add more fields to search in, e.g., Q(supplier__icontains=query)
+        products = products.filter(
+            Q(name__icontains=query) |
+            Q(sku__icontains=query)
+        ).distinct() # Use distinct() if your Q objects span relationships and might cause duplicates
+
     context = {
-        'products': products
+        'products': products,
+        # 'query': query # No longer strictly needed here as template uses request.GET.q
     }
     return render(request, 'invApp/product_list.html', context)
 
